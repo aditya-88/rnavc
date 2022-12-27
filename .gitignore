@@ -1,2 +1,7 @@
 # DB Folder
 db/
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
