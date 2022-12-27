@@ -140,8 +140,9 @@ if [ -f $OUT/$sample.err ]; then
     rm $OUT/$sample.err
 fi
 
+echo "Started: "$(date) > $OUT/$sample.log
 # Delete all empty files in the output directory
-echo "Deleting empty files" 1>$OUT/$sample.log
+echo "Housekeeping: Deleting empty files from the output folder" >>$OUT/$sample.log
 find $OUT -type f -empty -delete
 
 # Checking if the pipeline was run for the sample
@@ -153,7 +154,6 @@ fi
 echo -e "Running the pipeline\nCheck the log and error files for details and progress:\n$OUT/$sample.log\n$OUT/$sample.err"
 
 # Saving parameters and system information
-echo "Started: "$(date) >> $OUT/$sample.log
 echo "Allocated threads: "$cpus >> $OUT/$sample.log
 echo "Allocated memory: "$mem"G" >> $OUT/$sample.log
 echo "Parameters:" >> $OUT/$sample.log
