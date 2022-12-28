@@ -41,7 +41,8 @@ KNOWN=$3
 OUT=$4 #optional
 cpus=$5 #optional
 mem=$6 #optional
-gatk=$7 #optional
+BED=$7 #optional #bed file for targetted variant calling. If not provided, the whole data is used.
+gatk=$8 #optional
 
 # Set number of threads to all available cpus if not provided
 if [ ! $cpus ]; then
@@ -72,7 +73,7 @@ fi
 
 # Check if no arguments are provided, if yes print usage
 if [ $# -eq 0 ]; then
-    echo "Usage: bash rnavc <reference genome> <input BAM file> <known sites> <output directory> <threads> <memory in GB> <GATK 4.x executable>"
+    echo "Usage: rnavc <reference genome> <input BAM file> <known sites> <output directory> <threads> <memory in GB> <BED file> <GATK 4.x executable>"
     exit 1
 fi
 ## Initial checks
@@ -140,6 +141,8 @@ if [ -f $OUT/$sample.err ]; then
     rm $OUT/$sample.err
 fi
 
+# Initialize the new log file
+
 echo "Started: "$(date) > $OUT/$sample.log
 # Delete all empty files in the output directory
 echo "Housekeeping: Deleting empty files from the output folder" >>$OUT/$sample.log
@@ -160,6 +163,10 @@ echo "Parameters:" >> $OUT/$sample.log
 echo "Reference genome: "$REF >> $OUT/$sample.log
 echo "Input BAM file: "$BAM >> $OUT/$sample.log
 echo "Known sites: "$KNOWN >> $OUT/$sample.log
+# Print if BED file is provided
+if [ $BED ]; then
+    echo "BED file: "$BED >> $OUT/$sample.log
+fi
 echo "Output directory: "$OUT >> $OUT/$sample.log
 echo "GATK executable: "$gatk >> $OUT/$sample.log
 echo "---" >> $OUT/$sample.log
@@ -217,7 +224,14 @@ echo "Variant calling" >> $OUT/$sample.log
 if [ -f $OUT/$sample.raw.vcf ]; then
     echo ">HaplotypeCaller already run" >> $OUT/$sample.log
 else
-    $gatk --java-options "-Xmx"$mem"G -XX:ParallelGCThreads="$cpus"" HaplotypeCaller -R $REF -I $OUT/$sample.recal.bam -O $OUT/$sample.raw.vcf 1>> $OUT/$sample.log 2>> $OUT/$sample.err
+    # Check if BED file provided and if yes use it
+    if [ -f $BED ]; then
+        echo ">BED file provided, using it" >> $OUT/$sample.log
+        $gatk --java-options "-Xmx"$mem"G -XX:ParallelGCThreads="$cpus"" HaplotypeCaller -R $REF -I $OUT/$sample.recal.bam -L $BED -O $OUT/$sample.raw.vcf 1>> $OUT/$sample.log 2>> $OUT/$sample.err
+    else
+        echo ">No BED file provided, using complete dataset" >> $OUT/$sample.log
+        $gatk --java-options "-Xmx"$mem"G -XX:ParallelGCThreads="$cpus"" HaplotypeCaller -R $REF -I $OUT/$sample.recal.bam -O $OUT/$sample.raw.vcf 1>> $OUT/$sample.log 2>> $OUT/$sample.err
+    fi
 fi
 
 # Variant filtering
