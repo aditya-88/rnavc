@@ -261,7 +261,7 @@ rm $OUT/$sample.markdup.metrics.txt
 rm $OUT/$sample.split.bam
 rm $OUT/$sample.recal_data.table
 
-echo "Completed: "$(date) > $OUT/$sample.log
+echo "Completed: "$(date) >> $OUT/$sample.log
 echo "---" >> $OUT/$sample.log
 echo "For any questions, please contact: " >> $OUT/$sample.log
 echo "Aditya Singh" >> $OUT/$sample.log
