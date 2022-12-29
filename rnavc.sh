@@ -23,6 +23,7 @@
 # 1. GATK
 # 2. Picard tools (for MarkDuplicates, is part of GATK)
 # 3. STAR (for alignment, not required for this script)
+# 4. Samtools (for subsetting BAM files)
 
 # Exit on error from any part of the script
 set -eE
@@ -170,6 +171,33 @@ fi
 echo "Output directory: "$OUT >> $OUT/$sample.log
 echo "GATK executable: "$gatk >> $OUT/$sample.log
 echo "---" >> $OUT/$sample.log
+
+# If BED file is provided, check if it exists
+if [ $BED ]; then
+    if [ ! -f $BED ]; then
+        echo "X BED file not found"
+        exit 1
+    fi
+fi
+
+# If BED file is provided, subset the BAM file
+if [ $BED ]; then
+    # Check if the part was run before, if yes skip
+    if [ -f $OUT/$sample.subset.bam ]; then
+        echo "Subsetting already run" >> $OUT/$sample.log
+    else
+        echo "Subsetting the BAM file" >> $OUT/$sample.log
+        # Check if SAMTools is installed
+        if [ ! $(which samtools) ]; then
+            echo "X SAMTools not found"
+            exit 1
+        fi
+        # Subset the BAM file
+        samtools view -b -@ $cpus -L $BED $BAM > $OUT/$sample.subset.bam
+    fi
+    # Set the BAM file to the subsetted BAM file
+    BAM=$OUT/$sample.subset.bam
+fi
 
 # Check if the BAM file has read groups, if not add them
 echo "Checking read groups" >> $OUT/$sample.log
