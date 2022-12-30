@@ -288,6 +288,12 @@ rm $OUT/$sample.markdup.bam
 rm $OUT/$sample.markdup.metrics.txt
 rm $OUT/$sample.split.bam
 rm $OUT/$sample.recal_data.table
+rm $OUT/$sample.split.bai
+rm $OUT/$sample.raw.vcf
+rm $OUT/$sample.raw.vcf.idx
+rm $OUT/$sample.recal.bam
+rm $OUT/$sample.recal.bai
+rm $OUT/$sample.subset.bam
 
 echo "Completed: "$(date) >> $OUT/$sample.log
 echo "---" >> $OUT/$sample.log
