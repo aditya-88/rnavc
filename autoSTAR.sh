@@ -13,13 +13,13 @@
 # 5. Aligns the files with STAR
 # 6. Creates a folder for each sample and puts the output files in it
 
-# Usage: runstar <inputDir refDir annon.gtf outFolder threads>
+# Usage: autostar <inputDir refDir annon.gtf outFolder threads>
 
 # Check if the user has provided the correct number of arguments
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "runstar <inputDir refDir annon.gtf outFolder threads>"
+    echo "autostar <inputDir refDir annon.gtf outFolder threads>"
     exit
 fi
 
@@ -150,5 +150,5 @@ done
 
 
 echo "All Done"
-echo "Thanks for using RunSTAR!"
+echo "Thanks for using autostar!"
 
