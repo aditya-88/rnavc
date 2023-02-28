@@ -87,6 +87,11 @@ if [ ! -z "$6" ]; then
     samples=$(cat "$6")
     # Select only the files that match the samples
     files=$(echo "$files" | grep -E "$samples")
+    # If the list is empty, exit
+    if [ -z "$files" ]; then
+        echo "No files detected in the list"
+        exit
+    fi
 fi
 # Print the count of files detected divided by 2
 echo "Detected $(echo "$files" | wc -l | awk '{print $1/2}') samples"
