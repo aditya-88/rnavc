@@ -6,8 +6,8 @@
 # version 0.1
 # This program aligns NGS data with reference genome and annotation file
 # It does the following steps:
-# 1. Takes in an input directory with fastq files
-# 2. Finds all FASTQ/FASTQ.GZ files in the directory
+# 1. Takes in an input directory with fastq files and an optional list of sample names to process
+# 2. Finds all FASTQ/FASTQ.GZ files in the directory and selects the ones in the list, if provided
 # 3. Automatically detects if the file is paired end or single end
 # 4. Also detects if the sample was run on multiple lanes
 # 5. Aligns the files with STAR
@@ -19,7 +19,7 @@
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "autostar <inputDir refDir annon.gtf outFolder threads>"
+    echo "autostar <inputDir refDir annon.gtf outFolder threads list>"
     exit
 fi
 
@@ -75,6 +75,19 @@ fi
 # Detect all FASTQ/FASTQ.GZ files in the input directory
 echo "Detecting FASTQ/FASTQ.GZ files in the input directory"
 files=$(find "$1" -type f -name "*.fastq" -o -name "*.fastq.gz")
+# Check if the user provided a list of samples to process, if so, select only those files
+if [ ! -z "$6" ]; then
+    echo "Selecting files from the list"
+    # Check if the list file exists
+    if [ ! -f "$6" ]; then
+        echo "List file does not exist"
+        exit
+    fi
+    # Get the list of samples to process
+    samples=$(cat "$6")
+    # Select only the files that match the samples
+    files=$(echo "$files" | grep -E "$samples")
+fi
 # Print the count of files detected divided by 2
 echo "Detected $(echo "$files" | wc -l | awk '{print $1/2}') samples"
 
