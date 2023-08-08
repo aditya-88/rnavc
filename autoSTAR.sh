@@ -95,6 +95,11 @@ if [ ! -z "$6" ]; then
 fi
 # Print the count of files detected divided by 2
 echo "Detected $(echo "$files" | wc -l ) files"
+# Check if the provided reference was run through STAR genomeGenerate, if not, run it
+if [ ! -f "$2"/SAindex ]; then
+    echo "Reference not indexed. Indexing..."
+    "$star" --runMode genomeGenerate --genomeDir "$2" --genomeFastaFiles "$2"/genome.fa --sjdbGTFfile "$3" --runThreadN "$threads"
+fi
 
 # Loop through all the files
 for file in $files
