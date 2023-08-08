@@ -94,7 +94,7 @@ if [ ! -z "$6" ]; then
     fi
 fi
 # Print the count of files detected divided by 2
-echo "Detected $(echo "$files" | wc -l | awk '{print $1/2}') samples"
+echo "Detected $(echo "$files" | wc -l ) files"
 
 # Loop through all the files
 for file in $files

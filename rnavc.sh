@@ -42,7 +42,7 @@ KNOWN=$3
 OUT=$4 #optional
 cpus=$5 #optional
 mem=$6 #optional
-BED=$7 #optional #bed file for targetted variant calling. If not provided, the whole data is used.
+BED=$7 #optional #bed file for targeted variant calling. If not provided, the whole data is used.
 gatk=$8 #optional
 
 # Set number of threads to all available cpus if not provided
@@ -74,7 +74,7 @@ fi
 
 # Check if no arguments are provided, if yes print usage
 if [ $# -eq 0 ]; then
-    echo "Usage: rnavc <reference genome> <input BAM file> <known sites> <output directory> <threads> <memory in GB> <BED file> <GATK 4.x executable>"
+    echo "Usage: rnavc <reference genome> <input BAM file> <output directory> <threads> <memory in GB> <BED file> <GATK 4.x executable>"
     exit 1
 fi
 ## Initial checks

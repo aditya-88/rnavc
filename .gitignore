@@ -5,3 +5,7 @@ db/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# R specific files
+.Rhistory
+.RData
