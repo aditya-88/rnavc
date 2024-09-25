@@ -1,5 +1,7 @@
 # RNA-VC #
 
+[![DOI](https://zenodo.org/badge/582600349.svg)](https://zenodo.org/doi/10.5281/zenodo.13837677)
+
 ## Variant calling pipeline for RNA-Seq data ##
 
 ### Introduction ###
