@@ -9,3 +9,6 @@ db/
 # R specific files
 .Rhistory
 .RData
+
+# Release file
+*.tar.gz
