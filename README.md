@@ -30,3 +30,15 @@ The script requires the following tools to be installed:
 2. Picard tools (for MarkDuplicates, is part of GATK)
 3. STAR (for alignment, not required for this script)
 
+# Usage #
+
+```bash
+bash rnavc.sh <reference genome> <input BAM file> <output directory> <threads> <memory in GB> <BED file> <GATK 4.x executable>
+```
+# System Requirements #
+
+```txt
+Unix/ Linux system with BASH/ ZSH
+SAMTools
+GATK 4.x
+```
